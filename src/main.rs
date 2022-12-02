@@ -1,7 +1,9 @@
 
 mod aoc_2015;
 
+use crate::aoc_2015::solution::*;
 
 fn main() {
-    println!("Hello, world!");
+    solve_day_1_1();
+    solve_day_1_2();
 }
