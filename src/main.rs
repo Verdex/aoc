@@ -1,5 +1,6 @@
 
 mod aoc_2015;
+mod aoc_2022;
 
 use crate::aoc_2015::solution::*;
 
