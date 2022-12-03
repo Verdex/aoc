@@ -8,5 +8,6 @@ fn main() {
 
     //crate::aoc_2022::solution::solve_day_1_2();
     //crate::aoc_2022::solution::solve_day_2_1();
-    crate::aoc_2022::solution::solve_day_2_2();
+    //crate::aoc_2022::solution::solve_day_2_2();
+    crate::aoc_2022::solution::solve_day_3_1();
 }
