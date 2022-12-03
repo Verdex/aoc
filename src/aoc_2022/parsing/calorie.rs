@@ -2,7 +2,7 @@
 
 use motif::*;
 
-use super::data::*;
+use super::super::data::*;
 
 pub fn parse_calorie_list_list(input : &str) -> Vec<Vec<Calorie>> {
 
