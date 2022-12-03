@@ -2,7 +2,7 @@
 use super::inputs::input::DAY_1_1;
 use super::parsing;
 
-pub fn day_1_2() {
+pub fn solve_day_1_2() {
 
     let calories = parsing::parse_calorie_list_list(DAY_1_1);
     let mut results : Vec<u64> = calories.into_iter()
@@ -13,5 +13,5 @@ pub fn day_1_2() {
     results.reverse();
 
     let result : u64 = results.into_iter().take(3).sum();
-    println!("{}", result);
+    println!("2022 day 1:2 = {}", result);
 }

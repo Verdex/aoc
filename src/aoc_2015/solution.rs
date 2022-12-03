@@ -10,7 +10,7 @@ pub fn solve_day_1_1() {
         .map(|x| match x { ElevatorInstruction::Up => 1, ElevatorInstruction::Down => -1 })
         .sum();
 
-    println!("day 1:1 = {}", result);
+    println!("2015 day 1:1 = {}", result);
 }
 
 pub fn solve_day_1_2() {
@@ -23,7 +23,7 @@ pub fn solve_day_1_2() {
     for (pos, n) in numbers.into_iter().enumerate() { 
         cur += n;
         if cur <= -1 {
-            println!("day 1:2 = {}", pos + 1);
+            println!("2015 day 1:2 = {}", pos + 1);
             break;
         }
     }
