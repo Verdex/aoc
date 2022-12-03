@@ -15,3 +15,7 @@ pub fn solve_day_1_2() {
     let result : u64 = results.into_iter().take(3).sum();
     println!("2022 day 1:2 = {}", result);
 }
+
+pub fn solve_day_2_1() {
+    
+}
