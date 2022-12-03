@@ -53,6 +53,43 @@ fn find_target(primes : &[u128], input : (&str, &str)) -> usize {
     //to_char((x + 1).try_into().unwrap())
 }
 
+fn find_group_target(primes : &[u128], input : (&str, &str, &str)) -> usize {
+    fn split_contents(primes : &[u128], input : &str ) -> (u128, u128) {
+        let mut input = input.chars().collect::<Vec<_>>();
+        input.sort();
+        input.dedup();
+        let input = input.into_iter().collect::<String>();
+        let (a, b) = input.split_at(input.len() / 2);
+        let a = a.chars().map(priority).map(|x| primes[(x-1) as usize]).product();
+        let b = b.chars().map(priority).map(|x| primes[(x-1) as usize]).product();
+        (a,b)
+    }
+
+    fn split_gcd(a : (u128, u128), b : (u128, u128)) -> u128 {
+        let (a1, a2) = a;
+        let (b1, b2) = b;
+        let t1 = gcd(a1, b1);
+        let t2 = gcd(a1, b2);
+        let t3 = gcd(a2, b1);
+        let t4 = gcd(a2, b2);
+
+        t1 * t2 * t3 * t4
+    }
+
+    let (a, b, c) = input;
+
+    let a = split_contents(primes, a);
+    let b = split_contents(primes, b);
+    let c = split_contents(primes, c);
+
+
+    let a_and_b = split_gcd(a, b);
+    let b_and_c = split_gcd(b, c);
+    let target = gcd(a_and_b, b_and_c);
+    let (x, _) = primes.iter().enumerate().find(|(_, x)| **x == target).unwrap();
+    x+1
+    //to_char((x + 1).try_into().unwrap())
+}
 
 pub fn solve_1() {
 
@@ -62,16 +99,22 @@ pub fn solve_1() {
         .map(|x| find_target(&primes, x))
         .sum();
 
-    /*let input = 
-"vJrwpWtwJgWrhcsFMMfFFhFp
-jqHRNqRjqzjGDLGLrsFMfFZSrLrFZsSL
-PmmdzqPrVvPwwTWBwg
-wMqvLMZHhHMvwLHjbvcjnnSBnvTQFn
-ttgJtRGJQctTZtZT
-CrZsJsPPZsGzwwsLwLmpwMDw";
-    let result : usize = input.split("\n").map(|x| x.split_at(x.len() / 2))
-        .map(|x| find_target(&primes, x))
-        .sum();*/
-                     
     println!("2022 day 3:1 = {}", result);
+}
+
+pub fn solve_2() {
+    let primes = (2..).filter(|x| is_prime(*x)).take(52).collect::<Vec<u128>>();
+
+    let input = DAY_3_1;
+    let lines = input.split("\r\n").collect::<Vec<_>>();
+    let result : usize = lines.iter().zip(lines.iter().skip(1))
+        .zip(lines.iter().skip(2))
+        .map(|x| (*x.0.0, *x.0.1, *x.1))
+        .enumerate()
+        .filter(|(i, _)| i % 3 == 0)
+        .map(|(_, x)| x)
+        .map(|x| find_group_target(&primes, x))
+        .sum();
+
+    println!("2022 day 3:2 = {:?}", result);
 }
