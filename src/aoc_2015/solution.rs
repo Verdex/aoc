@@ -28,3 +28,42 @@ pub fn solve_day_1_2() {
         }
     }
 }
+
+pub fn solve_day_2_1() { 
+    fn req_paper(input : (u32, u32, u32)) -> u32 {
+        let l = input.0;
+        let w = input.1;
+        let h = input.2;
+
+        let mut x = vec![l*w, w*h, h*l];
+        x.sort();
+        let extra = x[0];
+        x.into_iter().map(|y| y * 2).sum::<u32>() + extra
+    }
+
+    let dims = parse_dimensions(DAY_2_1);
+
+    let result = dims.into_iter().map(|x| req_paper(x)).sum::<u32>();
+
+    println!("2015 day 2:1 {}", result);
+}
+
+pub fn solve_day_2_2() { 
+    fn req_bow(input : (u32, u32, u32)) -> u32 {
+        let l = input.0;
+        let w = input.1;
+        let h = input.2;
+
+        let mut x = vec![l, w, h];
+        x.sort();
+        let a = x[0] * 2;
+        let b = x[1] * 2;
+        a + b + (l * w * h)
+    }
+
+    let dims = parse_dimensions(DAY_2_1);
+
+    let result = dims.into_iter().map(|x| req_bow(x)).sum::<u32>();
+
+    println!("2015 day 2:2 {}", result);
+}
