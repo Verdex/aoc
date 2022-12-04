@@ -15,3 +15,9 @@ pub enum Status {
     Draw,
     Lose
 }
+
+#[derive(Debug)]
+pub struct Section {
+    pub start : u64,
+    pub end : u64,
+}
