@@ -2,6 +2,20 @@
 
 use super::super::inputs::input::*;
 
+fn power( input : char ) -> u64 {
+    1 << priority(input)
+}
+fn bag_to_bits( input : &str ) -> u64 {
+    input.chars().map(power).fold(0u64, |a, b| a | b)
+}
+fn bits_to_priority(input : u64) -> u64 {
+    for x in 1..=52 {
+        if (1 << x) & input != 0 {
+            return x;
+        }
+    }
+    panic!("didn't find priority of bits")
+}
 fn to_char(x : u32) -> char {
     match x {
         1..=26 => char::from_u32(x + 96).unwrap(),
@@ -116,5 +130,31 @@ pub fn solve_2() {
         .map(|x| find_group_target(&primes, x))
         .sum();
 
-    println!("2022 day 3:2 = {:?}", result);
+    println!("2022 day 3:2 = {}", result);
+}
+
+pub fn solve_1_2() {
+    let input = DAY_3_1;
+    let result = input.split("\r\n")
+                      .map(|x| x.split_at(x.len() / 2))
+                      .map(|(a,b)| bits_to_priority(bag_to_bits(a) & bag_to_bits(b)))
+                      .sum::<u64>();
+
+    println!("2022 day 3:1 v2 = {}", result);
+}
+
+pub fn solve_2_2() {
+
+    let input = DAY_3_1;
+    let lines = input.split("\r\n").collect::<Vec<_>>();
+    let result = lines.iter().zip(lines.iter().skip(1))
+        .zip(lines.iter().skip(2))
+        .map(|x| (*x.0.0, *x.0.1, *x.1))
+        .enumerate()
+        .filter(|(i, _)| i % 3 == 0)
+        .map(|(_, x)| x)
+        .map(|(a,b,c)| bits_to_priority(bag_to_bits(a) & bag_to_bits(b) & bag_to_bits(c)))
+        .sum::<u64>();
+
+    println!("2022 day 3:2 v2 = {}", result);
 }
