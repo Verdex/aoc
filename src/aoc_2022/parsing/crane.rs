@@ -8,6 +8,8 @@ pub fn parse_crane( input : &str ) -> CraneScenario {
     panic!("!");
 }
 
+pred!(ws: char = |x| x == ' ');
+
 group!(end_line: char => () = |input| {
     pred!(cr: char => () = |x| x == '\r' => { () });
     pred!(lf: char => () = |x| x == '\n' => { () });
@@ -30,7 +32,6 @@ group!(number: char => usize = |input| {
 });
 
 group!(instrs: char => Vec<CraneInstruction> = |input| {
-    pred!(ws: char = |x| x.is_whitespace());
     seq!(move_sym: char => () = 'm', 'o', 'v', 'e', { () });
     seq!(from_sym: char => () = 'f', 'r', 'o', 'm', { () });
     seq!(to_sym: char => () = 't', 'o', { () });
@@ -54,9 +55,47 @@ group!(instrs: char => Vec<CraneInstruction> = |input| {
     main(input)
 });
 
+group!(scenario_row: char => Vec<Option<char>> = |input| {
+    pred!(lsquare: char = |x| x == '[');
+    pred!(rsquare: char = |x| x == ']');
+    pred!(letter: char = |x| x.is_alphabetic());
+    seq!(container: char => Option<char> = lsquare, l <= letter, rsquare, { Some(l) });
+    seq!(empty: char => Option<char> = ws, ws, ws, { None });
+    alt!(item: char => Option<char> = empty | container);
+    seq!(item_ws: char => Option<char> = x <= item, ws, { x });
+    
+    seq!(main: char => Vec<Option<char>> = xs <= * item_ws, x <= ! item, ! end_line, { 
+        let mut xs = xs;
+        xs.push(x);
+        xs
+    });
+
+    main(input)
+});
+
 #[cfg(test)]
 mod test { 
     use super::*;
+
+    #[test]
+    fn scenario_row_should_parse() {
+        let input = "    [B]             [B] [S]        
+
+";
+
+        let mut i = input.char_indices();
+        let output = scenario_row(&mut i).unwrap();
+        assert_eq!( output.len(), 9 );
+        assert_eq!( output[0], None );
+        assert_eq!( output[1], Some('B') );
+        assert_eq!( output[2], None );
+        assert_eq!( output[3], None );
+        assert_eq!( output[4], None );
+        assert_eq!( output[5], Some('B') );
+        assert_eq!( output[6], Some('S') );
+        assert_eq!( output[7], None );
+        assert_eq!( output[8], None );
+    }
 
     #[test]
     fn instrs_should_parse() {
