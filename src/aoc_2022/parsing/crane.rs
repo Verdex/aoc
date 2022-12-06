@@ -65,8 +65,8 @@ group!(scenario_row: char => Vec<Option<char>> = |input| {
     seq!(empty: char => Option<char> = ws, ws, ws, { None });
     alt!(item: char => Option<char> = empty | container);
     seq!(item_ws: char => Option<char> = x <= item, ws, { x });
-    
-    seq!(main: char => Vec<Option<char>> = xs <= * item_ws, x <= ! item, ! end_line, { 
+
+    seq!(main: char => Vec<Option<char>> = xs <= * item_ws, x <= item, end_line, { 
         let mut xs = xs;
         xs.push(x);
         xs
@@ -76,13 +76,9 @@ group!(scenario_row: char => Vec<Option<char>> = |input| {
 });
 
 group!(scenario: char => CraneScenario = |input| {
-    pred!(any: char = |x| x != '\n' || x != '\r');
-    seq!(eat: char => () = * any, end_line, { () });
 
     seq!(main: char => CraneScenario 
         = rows <= * scenario_row
-        , eat
-        , eat
         , instructions <= instrs 
         , {
             use std::collections::HashMap;
