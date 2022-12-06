@@ -4,8 +4,10 @@ use motif::*;
 use super::super::data::*;
 
 pub fn parse_crane( input : &str ) -> CraneScenario {
-
-    panic!("!");
+    let mut i = input.char_indices();
+    let output = scenario(&mut i).unwrap();
+    if i.count() != 0 { panic!("not all input is consumed"); }
+    output
 }
 
 pred!(ws: char = |x| x == ' ');
@@ -69,6 +71,43 @@ group!(scenario_row: char => Vec<Option<char>> = |input| {
         xs.push(x);
         xs
     });
+
+    main(input)
+});
+
+group!(scenario: char => CraneScenario = |input| {
+    pred!(any: char = |x| x != '\n' || x != '\r');
+    seq!(eat: char => () = * any, end_line, { () });
+
+    seq!(main: char => CraneScenario 
+        = rows <= * scenario_row
+        , eat
+        , eat
+        , instructions <= instrs 
+        , {
+            use std::collections::HashMap;
+
+            let mut stacks : HashMap<usize, Vec<char>> = (1..=9).into_iter().map(|x| (x, vec![])).collect();
+
+            for x in 0..=8 {
+                for row in rows.iter() {
+                    match row[x] {
+                        Some(item) => { 
+                            let target = stacks.get_mut(&(x + 1)).unwrap(); 
+                            target.push(item);
+                        },
+                        None => { },
+                    }
+                }
+            }
+
+            for x in 1..=9 {
+                let target = stacks.get_mut(&x).unwrap();
+                target.reverse();
+            }
+
+            CraneScenario { instrs: instructions, stacks }
+        });
 
     main(input)
 });
