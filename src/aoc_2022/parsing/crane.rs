@@ -35,5 +35,41 @@ group!(instrs: char => Vec<CraneInstruction> = |input| {
     seq!(from_sym: char => () = 'f', 'r', 'o', 'm', { () });
     seq!(to_sym: char => () = 't', 'o', { () });
 
-    Err(MatchError::Fatal(0))
+    seq!(instr: char => CraneInstruction 
+        = move_sym, ws, count <= number, ws, from_sym, ws, src <= number, ws, to_sym, ws, dest <= number
+        , 
+        {
+            CraneInstruction { count, src, dest }
+        });
+
+    seq!(instr_end: char => CraneInstruction = instr <= instr, end_line, { instr });
+    seq!(main: char => Vec<CraneInstruction> = xs <= * instr_end, mx <= ? instr, {
+        let mut xs = xs;
+        match mx { 
+            Some(x) => { xs.push(x); xs },
+            None => xs,
+        }
+    });
+
+    main(input)
 });
+
+#[cfg(test)]
+mod test { 
+    use super::*;
+
+    #[test]
+    fn instrs_should_parse() {
+        let input = "move 1 from 2 to 3
+move 4 from 5 to 6";
+        let mut i = input.char_indices();
+        let output = instrs(&mut i).unwrap();
+        assert_eq!( output.len(), 2 );
+        assert_eq!( output[0].count, 1 );
+        assert_eq!( output[0].src, 2 );
+        assert_eq!( output[0].dest, 3 );
+        assert_eq!( output[1].count, 4 );
+        assert_eq!( output[1].src, 5 );
+        assert_eq!( output[1].dest, 6 );
+    }
+}
