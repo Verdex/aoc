@@ -1,4 +1,6 @@
 
+use std::collections::HashMap;
+
 #[derive(Debug, PartialEq, Eq, Hash, Clone, Copy)]
 pub struct Calorie(pub u64);
 
@@ -20,4 +22,17 @@ pub enum Status {
 pub struct Section {
     pub start : u64,
     pub end : u64,
+}
+
+#[derive(Debug)]
+pub struct CraneInstruction {
+    pub count : usize,
+    pub src : usize,
+    pub dest : usize,
+}
+
+#[derive(Debug)]
+pub struct CraneScenario {
+    pub stacks : HashMap<usize, Vec<char>>,
+    pub instrs : Vec<CraneInstruction>, 
 }
