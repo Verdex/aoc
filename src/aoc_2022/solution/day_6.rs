@@ -10,15 +10,17 @@ enum List<T> {
     Nil,
 }
 
-fn to_list<T>(mut input : Vec<T>) -> List<T> {
-    input.reverse();
+impl<T> From<Vec<T>> for List<T> {
+    fn from(mut input : Vec<T>) -> Self {
+        input.reverse();
 
-    let mut ret = List::Nil;
-    for i in input {
-        ret = List::Cons(i, Box::new(ret));
+        let mut ret = List::Nil;
+        for i in input {
+            ret = List::Cons(i, Box::new(ret));
+        }
+
+        ret
     }
-
-    ret
 }
 
 impl<'a, T> Linearizable<'a> for List<T> {
@@ -47,9 +49,8 @@ pub fn solve_1() {
                         ; Cons((target, d), _) ? { all_diff(*a, *b, *c, *d) } => { *target });
 
     let input = DAY_6_1;
-    let list = to_list(input.char_indices().collect::<Vec<_>>());
+    let list : List<(usize, char)> = input.char_indices().collect::<Vec<_>>().into();
     let result = list.to_lax().flat_map(|x| target(&x)).min().unwrap() + 1;
-
 
     println!("2022 day 6:1 = {}", result);
 }
@@ -83,9 +84,8 @@ pub fn solve_2() {
                         ? { all_diff(vec![_1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12, _13, _14]) } => { *target });
 
     let input = DAY_6_1;
-    let list = to_list(input.char_indices().collect::<Vec<_>>());
+    let list : List<(usize, char)> = input.char_indices().collect::<Vec<_>>().into();
     let result = list.to_lax().flat_map(|x| target(&x)).min().unwrap() + 1;
-
 
     println!("2022 day 6:2 = {}", result);
 }
