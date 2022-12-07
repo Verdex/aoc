@@ -4,6 +4,7 @@ use super::data::*;
 use super::parsing::parser::*;
 use super::inputs::input::*;
 
+#[allow(dead_code)]
 pub fn solve_day_1_1() {
     let result : i32 = parse_elevator_instructions(DAY_1_1)
         .into_iter()
@@ -13,6 +14,7 @@ pub fn solve_day_1_1() {
     println!("2015 day 1:1 = {}", result);
 }
 
+#[allow(dead_code)]
 pub fn solve_day_1_2() {
     let numbers = parse_elevator_instructions(DAY_1_1)
         .into_iter()
@@ -29,6 +31,7 @@ pub fn solve_day_1_2() {
     }
 }
 
+#[allow(dead_code)]
 pub fn solve_day_2_1() { 
     fn req_paper(input : (u32, u32, u32)) -> u32 {
         let l = input.0;
@@ -48,6 +51,7 @@ pub fn solve_day_2_1() {
     println!("2015 day 2:1 = {}", result);
 }
 
+#[allow(dead_code)]
 pub fn solve_day_2_2() { 
     fn req_bow(input : (u32, u32, u32)) -> u32 {
         let l = input.0;
@@ -68,6 +72,7 @@ pub fn solve_day_2_2() {
     println!("2015 day 2:2 = {}", result);
 }
 
+#[allow(dead_code)]
 pub fn solve_day_3_1() {
     let input = DAY_3_1.chars();
 
@@ -92,6 +97,7 @@ pub fn solve_day_3_1() {
     println!("2015 day 3:1 = {}", v.len());
 }
 
+#[allow(dead_code)]
 pub fn solve_day_3_2() {
     let input = DAY_3_1.chars();
 

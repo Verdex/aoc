@@ -42,6 +42,7 @@ fn status_to_play(opponent : &RPS, goal : &Status) -> RPS {
     }
 }
 
+#[allow(dead_code)]
 pub fn solve_1() {
 
     let guide = parsing::rps::parse_rps_list(DAY_2_1);
@@ -52,6 +53,7 @@ pub fn solve_1() {
     println!("2022 day 2:1 = {}", result);
 }
 
+#[allow(dead_code)]
 pub fn solve_2() {
 
     let guide = parsing::rps::parse_rps_list_correctly(DAY_2_1);

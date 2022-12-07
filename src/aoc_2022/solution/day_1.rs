@@ -2,6 +2,7 @@
 use super::super::inputs::input::*;
 use super::super::parsing;
 
+#[allow(dead_code)]
 pub fn solve_2() {
 
     let calories = parsing::calorie::parse_calorie_list_list(DAY_1_1);

@@ -133,6 +133,7 @@ pub fn solve_2() {
     println!("2022 day 3:2 = {}", result);
 }
 
+#[allow(dead_code)]
 pub fn solve_1_2() {
     let input = DAY_3_1;
     let result = input.split("\r\n")
@@ -143,6 +144,7 @@ pub fn solve_1_2() {
     println!("2022 day 3:1 v2 = {}", result);
 }
 
+#[allow(dead_code)]
 pub fn solve_2_2() {
 
     let input = DAY_3_1;

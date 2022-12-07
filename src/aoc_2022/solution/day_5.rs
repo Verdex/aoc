@@ -2,6 +2,7 @@
 use super::super::parsing::crane::*;
 use super::super::inputs::input::*;
 
+#[allow(dead_code)]
 pub fn solve_1() {
     let input = DAY_5_1;
     let mut scenario = parse_crane(input);
@@ -31,6 +32,7 @@ pub fn solve_1() {
     println!("2022 day 5:1 = {}", result.into_iter().collect::<String>());
 }
 
+#[allow(dead_code)]
 pub fn solve_2() {
     let input = DAY_5_1;
     let mut scenario = parse_crane(input);

@@ -16,6 +16,7 @@ fn overlap(input : &(Section, Section)) -> bool {
     || (s2 >= s1 && s2 <= e1) || (e2 >= s1 && e2 <= e1)
 }
 
+#[allow(dead_code)]
 pub fn solve_1() {
     let input = DAY_4_1;
     let pairs = parse_section_pair_list(input);
@@ -26,6 +27,7 @@ pub fn solve_1() {
     println!("2022 day 4:1 = {:?}", result);
 }
 
+#[allow(dead_code)]
 pub fn solve_2() {
     let input = DAY_4_1;
     let pairs = parse_section_pair_list(input);
