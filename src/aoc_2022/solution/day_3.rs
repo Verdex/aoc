@@ -105,6 +105,7 @@ fn find_group_target(primes : &[u128], input : (&str, &str, &str)) -> usize {
     //to_char((x + 1).try_into().unwrap())
 }
 
+#[allow(dead_code)]
 pub fn solve_1() {
 
     let primes = (2..).filter(|x| is_prime(*x)).take(52).collect::<Vec<u128>>();
@@ -116,6 +117,7 @@ pub fn solve_1() {
     println!("2022 day 3:1 = {}", result);
 }
 
+#[allow(dead_code)]
 pub fn solve_2() {
     let primes = (2..).filter(|x| is_prime(*x)).take(52).collect::<Vec<u128>>();
 
