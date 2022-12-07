@@ -58,6 +58,7 @@ pub fn solve_2() {
     use List::*;
 
     fn all_diff(mut x : Vec<&char>) -> bool {
+        // I wonder if this can be sped up with the day 3 bit trick
         let target = x.len();
         x.sort();
         x.dedup();
