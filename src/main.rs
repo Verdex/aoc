@@ -19,6 +19,8 @@ fn main() {
     //crate::aoc_2022::solution::day_3::solve_2_2();
     //crate::aoc_2022::solution::day_4::solve_1();
     //crate::aoc_2022::solution::day_4::solve_2();
-    crate::aoc_2022::solution::day_5::solve_1();
-    crate::aoc_2022::solution::day_5::solve_2();
+    //crate::aoc_2022::solution::day_5::solve_1();
+    //crate::aoc_2022::solution::day_5::solve_2();
+    crate::aoc_2022::solution::day_6::solve_1();
+    crate::aoc_2022::solution::day_6::solve_2();
 }
