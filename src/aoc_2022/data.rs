@@ -39,14 +39,14 @@ pub struct CraneScenario {
 
 #[derive(Debug)]
 pub enum DirItem {
-    File { size: usize, name: &str },
-    Dir(&str),
+    File(usize, String),
+    Dir(String),
 }
 
 #[derive(Debug)]
 pub enum CommandLine {
     CdUp,
-    CdTo(&str),
+    CdTo(String),
     CdHome,
     Ls()
 }

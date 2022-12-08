@@ -32,6 +32,7 @@ impl<'a, T> Linearizable<'a> for List<T> {
     }
 }
 
+#[allow(dead_code)]
 pub fn solve_1() {
     use List::*;
 
@@ -55,6 +56,7 @@ pub fn solve_1() {
     println!("2022 day 6:1 = {}", result);
 }
 
+#[allow(dead_code)]
 pub fn solve_2() {
     use List::*;
 
