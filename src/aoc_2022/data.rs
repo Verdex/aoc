@@ -48,5 +48,5 @@ pub enum CommandLine {
     CdUp,
     CdTo(String),
     CdHome,
-    Ls()
+    Ls(Vec<DirItem>),
 }
