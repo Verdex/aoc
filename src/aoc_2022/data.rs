@@ -36,3 +36,17 @@ pub struct CraneScenario {
     pub stacks : HashMap<usize, Vec<char>>,
     pub instrs : Vec<CraneInstruction>, 
 }
+
+#[derive(Debug)]
+pub enum DirItem {
+    File { size: usize, name: &str },
+    Dir(&str),
+}
+
+#[derive(Debug)]
+pub enum CommandLine {
+    CdUp,
+    CdTo(&str),
+    CdHome,
+    Ls()
+}
