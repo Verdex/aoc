@@ -12,6 +12,44 @@ enum Tree {
     Node(Vec<Tree>, String),
 }
 
+impl<'a> Linearizable<'a> for Tree {
+    fn l_next(&'a self) -> Vec<&'a Self> {
+        match self {
+            Tree::Leaf(_, _) => vec![],
+            Tree::Node(children, _) => children.iter().map(|x| x).collect::<Vec<_>>(),
+        }
+    }
+}
+
+fn leaf_values(input : &Tree) -> usize {
+    let f : fn(&Tree) -> Vec<usize>
+        = object_pattern!(Tree::Leaf(v, _) => { *v });
+    input.to_lax().flat_map(|x| f(x)).sum()
+}
+
+fn problem_1_target_directories_sum(input : &Tree) -> usize {
+    let f : fn(&Tree) -> Vec<usize>
+        = object_pattern!(Tree::Node(children, _) & { let total = children.iter().map(|x| leaf_values(x)).sum(); } => { total });
+
+    input.to_lax().flat_map(|x| f(x)).filter(|x| *x <= 100000).sum()
+}
+
+fn problem_2_target_directory_size(input : &Tree) -> usize {
+    let total_space = 70000000; 
+    let required_space = 30000000;
+
+    let f : fn(&Tree) -> Vec<usize>
+        = object_pattern!(Tree::Node(children, _) & { let total = children.iter().map(|x| leaf_values(x)).sum(); } => { total });
+
+    let max = input.to_lax().flat_map(|x| f(x)).max().unwrap();
+
+    let free_space = total_space - max;
+
+    let target_space = required_space - free_space;
+
+    input.to_lax().flat_map(|x| f(x)).filter(|x| *x >= target_space).min().unwrap()
+}
+
 fn to_tree(input : &mut Vec<CommandLine>, current_dir : String) -> Tree {
     let mut children = vec![];
     while input.len() != 0 {
@@ -36,35 +74,26 @@ fn to_tree(input : &mut Vec<CommandLine>, current_dir : String) -> Tree {
 
 #[allow(dead_code)]
 pub fn solve_1() {
-    let input = "$ cd /
-$ ls
-dir a
-14848514 b.txt
-8504156 c.dat
-dir d
-$ cd a
-$ ls
-dir e
-29116 f
-2557 g
-62596 h.lst
-$ cd e
-$ ls
-584 i
-$ cd ..
-$ cd ..
-$ cd d
-$ ls
-4060174 j
-8033020 d.log
-5626152 d.ext
-7214296 k";
-    let command_line = parse_command_line(input);
+    let input = DAY_7_1;
+    let mut command_line = parse_command_line(input);
+    command_line.remove(0);
+    command_line.reverse();
+    let tree = to_tree(&mut command_line, "/".into());
 
-    println!("2022 day 7:1 = {:?}", output);
+    let output = problem_1_target_directories_sum(&tree);
+
+    println!("2022 day 7:1 = {}", output);
 }
 
 #[allow(dead_code)]
 pub fn solve_2() {
+    let input = DAY_7_1;
+    let mut command_line = parse_command_line(input);
+    command_line.remove(0);
+    command_line.reverse();
+    let tree = to_tree(&mut command_line, "/".into());
 
+    let output = problem_2_target_directory_size(&tree);
+
+    println!("2022 day 7:2 = {}", output);
 }
