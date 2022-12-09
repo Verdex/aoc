@@ -23,6 +23,8 @@ fn main() {
     //crate::aoc_2022::solution::day_5::solve_2();
     //crate::aoc_2022::solution::day_6::solve_1();
     //crate::aoc_2022::solution::day_6::solve_2();
-    crate::aoc_2022::solution::day_7::solve_1();
-    crate::aoc_2022::solution::day_7::solve_2();
+    //crate::aoc_2022::solution::day_7::solve_1();
+    //crate::aoc_2022::solution::day_7::solve_2();
+    crate::aoc_2022::solution::day_8::solve_1();
+    crate::aoc_2022::solution::day_8::solve_2();
 }
