@@ -50,3 +50,9 @@ pub enum CommandLine {
     CdHome,
     Ls(Vec<DirItem>),
 }
+
+#[derive(Debug)]
+pub enum Asm {
+    Noop,
+    Addx(i64),
+}
