@@ -38,6 +38,7 @@ fn to_row(hash : &HashMap<(usize, usize), usize>, target : (usize, usize), col_l
     ret
 }
 
+#[allow(dead_code)]
 pub fn solve_1() {
     let row_len = 99;
     let col_len = 99;
@@ -96,6 +97,7 @@ pub fn solve_1() {
     println!("2022 day 8:1 = {:?}", seen.len());
 }
 
+#[allow(dead_code)]
 pub fn solve_2() {
     fn dist<'a>(target : usize, list : impl Iterator<Item = &'a usize> ) -> usize {
         let mut d = 1;
