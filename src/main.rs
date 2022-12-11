@@ -1,4 +1,5 @@
 
+mod common;
 mod aoc_2015;
 mod aoc_2022;
 
