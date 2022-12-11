@@ -8,7 +8,7 @@ version = "0.1.0"
 dependencies = [
  "bending",
  "denest",
- "motif",
+ "motif 0.2.0",
 ]
 
 [[package]]
@@ -17,7 +17,7 @@ version = "0.1.0"
 source = "git+https://github.com/Verdex/bending?tag=release-0.1.0#3b9959d465ef340b6c2da8b1e792c6216385a27a"
 dependencies = [
  "denest",
- "motif",
+ "motif 0.1.0",
 ]
 
 [[package]]
@@ -29,3 +29,8 @@ source = "git+https://github.com/Verdex/denest?tag=release-0.1.0#1df2a91c4316d4f
 name = "motif"
 version = "0.1.0"
 source = "git+https://github.com/Verdex/motif?tag=release-0.1.0#8ae8cc88956756f0bf48750ea5b8e89c9fba6ddf"
+
+[[package]]
+name = "motif"
+version = "0.2.0"
+source = "git+https://github.com/Verdex/motif?tag=release-0.2.0#8ba6be0096b2fa9b1908388ed86562d345a971b2"
