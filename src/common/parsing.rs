@@ -1,4 +1,6 @@
 
+use motif::*;
+
 pred!(pub ws: char = |x| x == ' ');
 
 group!(pub end_line: char => () = |input| {

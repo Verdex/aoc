@@ -4,7 +4,7 @@ use std::collections::HashMap;
 use super::super::inputs::input::*;
 
 
-fn parse(input : &str) -> HashMap<(i32, i32), char> {
+/*fn parse(input : &str) -> HashMap<(i32, i32), char> {
     let mut ret = HashMap::new();
     let lines = input.split(|x| x == '\n' || x == '\r');
 
@@ -87,4 +87,4 @@ abdefghi";
 #[allow(dead_code)]
 pub fn solve_2() {
     println!("2022 day 12:2 = {}", 0);
-}
+}*/
