@@ -10,3 +10,4 @@ pub static DAY_8_1 : &'static str = include_str!("day_8_1.txt");
 pub static DAY_9_1 : &'static str = include_str!("day_9_1.txt");
 pub static DAY_10_1 : &'static str = include_str!("day_10_1.txt");
 pub static DAY_12_1 : &'static str = include_str!("day_12_1.txt");
+pub static DAY_13_1 : &'static str = include_str!("day_13_1.txt");

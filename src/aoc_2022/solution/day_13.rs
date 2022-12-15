@@ -1,12 +1,15 @@
 
+use std::cmp::Ordering;
 use motif::*;
 use crate::common::parsing::*;
+use super::super::inputs::input::*;
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 enum Item {
     Int(i64),
     List(Vec<Item>),
 }
+
 
 pred!(l: char = |x| x == '[');
 pred!(r: char = |x| x == ']');
@@ -49,39 +52,75 @@ fn parse(input : &str) -> Vec<(Item, Item)> {
     output
 }
 
+fn cmp(pair : (&Item, &Item)) -> Ordering {
+    match pair {
+        (Item::Int(a), Item::Int(b)) => a.cmp(b),
+        (a @ Item::Int(_), b) => cmp((&Item::List(vec![a.clone()]), b)),
+        (a, b @ Item::Int(_)) => cmp((a, &Item::List(vec![b.clone()]))),
+        (Item::List(a), Item::List(b)) => {
+            for (a, b) in a.iter().zip(b.iter()) {
+                let r = cmp((a, b));
+                if r != Ordering::Equal {
+                    return r;
+                }
+            }
+            if a.len() < b.len() {
+                Ordering::Less
+            }
+            else if a.len() == b.len() {
+                Ordering::Equal
+            }
+            else {
+                Ordering::Greater
+            }
+        },
+    }
+}
+
 #[allow(dead_code)]
 pub fn solve_1() {
-    let input = "[1,1,3,1,1]
-[1,1,5,1,1]
+    let input = DAY_13_1;
 
-[[1],[2,3,4]]
-[[1],4]
+    let s = parse(input).into_iter()
+                        .map(|(a, b)| cmp((&a, &b)))
+                        .enumerate()
+                        .filter(|(_, x)| *x == Ordering::Less)
+                        .map(|(x, _)| x + 1)
+                        .sum::<usize>();
 
-[9]
-[[8,7,6]]
-
-[[4,4],4,4]
-[[4,4],4,4,4]
-
-[7,7,7,7]
-[7,7,7]
-
-[]
-[3]
-
-[[[]]]
-[[]]
-
-[1,[2,[3,[4,[5,6,7]]]],8,9]
-[1,[2,[3,[4,[5,6,0]]]],8,9]";
-
-    let pairs = parse(input);
-
-    println!("{:?}", pairs.last().unwrap());
+    println!("2022 day 13:1 = {}", s);
 
 }
 
 #[allow(dead_code)]
 pub fn solve_2() {
+    let input = DAY_13_1;
+    let input = format!("[[2]]\n[[6]]\n\n{}", input);
 
+    let mut packets = parse(input.as_str()).into_iter().flat_map(|(a,b)| vec![a, b]).collect::<Vec<_>>();
+    packets.sort_by(|a, b| cmp((a, b)));
+
+    let s = packets.into_iter()
+                   .enumerate()
+                   .filter(|(_, x)| {
+                        match x {
+                            Item::List(x) if x.len() == 1 => {
+                                match &x[0] {
+                                    Item::List(x) if x.len() == 1 => {
+                                        match &x[0] {
+                                            Item::Int(2 | 6) => true,
+                                            _ => false,
+                                        }
+                                    },
+                                    _ => false,
+                                }
+
+                            },
+                            _ => false,
+                        }
+                   })
+                   .map(|(x, _)| x + 1)
+                   .product::<usize>();
+
+    println!("2022 day 13:2 = {}", s);
 }
