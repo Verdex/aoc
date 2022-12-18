@@ -210,12 +210,23 @@ fn display<V : Debug>(maze : &HashMap<(usize, usize), V>) {
     let row_max = maze.iter().map(|((r, _), _)| *r).max().unwrap();
     let col_max = maze.iter().map(|((_, c), _)| *c).max().unwrap();
 
-    let x = (0..=row_max).map(|r| (0..=col_max).map(|c| format!("{:?}", *maze.get(&(r, c)).unwrap()))
+    let x = (0..=row_max).map(|r| (0..=col_max).map(|c| format!("{:^5}", format!("{:?}", *maze.get(&(r, c)).unwrap())))
                                                .collect::<Vec<_>>()
                                                .join("")
                              ).collect::<Vec<_>>()
                               .join("\n");
-    println!("{}", x);
+    println!("{:}", x);
+}
+
+fn display2(maze : &HashMap<(usize, usize), Mazelet>) {
+    let z = maze.iter().map(|(k, x)| (*k, match x {
+        Mazelet::Unmapped(l) => char::from_u32(*l).unwrap().to_string(),
+        Mazelet::Mapped { letter, dist } => dist.to_string(),
+        Mazelet::Start => "S".to_string(),
+        Mazelet::End => "E".to_string(),
+    })).collect::<HashMap<_, _>>();
+
+    display(&z);
 }
 
 fn parse(input : &str) -> HashMap<(usize, usize), char> {
@@ -231,30 +242,116 @@ fn parse(input : &str) -> HashMap<(usize, usize), char> {
     ret
 }
 
+fn neighbors<T>(maze : &HashMap<(usize, usize), T>, loc : (usize, usize)) -> Vec<(usize, usize)> {
+    let (r, c) = loc;
+    let mut ret = vec![];
+    match maze.get(&(r + 1, c)) {
+        Some(_) => ret.push((r + 1, c)),
+        _ => { },
+    }
+    match maze.get(&(r, c + 1)) {
+        Some(_) => ret.push((r, c + 1)),
+        _ => { },
+    }
+    if r != 0 {
+        match maze.get(&(r - 1, c)) {
+            Some(_) => ret.push((r - 1, c)),
+            _ => { },
+        }
+    }
+    if c != 0 {
+        match maze.get(&(r, c - 1)) {
+            Some(_) => ret.push((r, c - 1)),
+            _ => { },
+        }
+    }
+    ret
+}
+
+#[derive(Debug)]
 enum Mazelet {
     Unmapped(u32),
-    Mapped(u32),
+    Mapped{ letter: u32, dist : u32 },
     Start,
     End,
 }
 
 #[allow(dead_code)]
 pub fn solve_1() {
-    //let input = DAY_12_1;
-    let input = "Sabqponm
+    let input = DAY_12_1;
+    /*let input = "Sabqponm
 abcryxxl
 accszExk
 acctuvwj
-abdefghi";
+abdefghi";*/
 
     let mut maze = parse(input);
 
-    display(&maze);
+    let src = *maze.iter().find(|(_, l)| **l == 'S').unwrap().0;
+    let dest = *maze.iter().find(|(_, l)| **l == 'E').unwrap().0;
 
-    let other = maze.iter().map(|(key, value)| (key, *value as i32)).collect::<HashMap<_, _>>();
+    let mut maze = maze.into_iter().map(|x| match x {
+                                            (key, letter @ 'a'..='z') => (key, Mazelet::Unmapped(letter as u32)),
+                                            (key, 'E') => (key, Mazelet::End),
+                                            (key, 'S') => (key, Mazelet::Start),
+                                            _ => unreachable!(),
+                                        })
+                                .collect::<HashMap<_, _>>();
 
-    println!("{:?}", other);
+    let targets = neighbors(&maze, dest).into_iter()
+                                        .filter(|loc| {
+                                            if let Some(Mazelet::Unmapped(x)) = maze.get(loc){
+                                                *x == 'z' as u32
+                                            } else { 
+                                                false
+                                            }
+                                        }).collect::<Vec<_>>();
 
+    for t in targets {
+        *maze.get_mut(&t).unwrap() = Mazelet::Mapped { letter: 'z' as u32, dist: 1 };
+    }
+
+    let mut unmapped = 0;
+
+    loop {
+
+        let targets = maze.iter().filter(|(_, v)| matches!( v, Mazelet::Mapped { .. }))
+                                .map(|(k, _)| (*k, neighbors(&maze, *k)))
+                                .collect::<Vec<_>>();
+        
+        for (mapped, neighbors) in targets {
+            let (letter, dist) = match maze.get(&mapped).unwrap() {
+                Mazelet::Mapped { letter, dist } => (*letter, *dist),
+                _ => unreachable!(),
+            };
+            for neighbor in neighbors {
+                if let Some(Mazelet::Unmapped(x)) = maze.get(&neighbor) {
+                    if letter - 1 <= *x {
+                        maze.insert(neighbor, Mazelet::Mapped { letter: *x, dist: dist + 1 });
+                    }
+                }
+                if let Some(Mazelet::Mapped { letter: x, dist: old_dist }) = maze.get(&neighbor) {
+                    if *old_dist > dist + 1 && letter - 1 <= *x {
+                        maze.insert(neighbor, Mazelet::Mapped { letter: *x, dist: dist + 1 });
+                    }
+                }
+            }
+        }
+
+        let temp = maze.iter().filter(|(_, v)| matches!(v, Mazelet::Unmapped(_))).count();
+        if temp == unmapped {
+            break;
+        }
+        else {
+            unmapped = temp;
+        }
+    }
+
+    display2(&maze);
+
+    for ns in neighbors(&maze, src) {
+        println!("{:?}", maze.get(&ns).unwrap());
+    }
     //println!("2022 day 12:1 = {}", s);
 }
 
