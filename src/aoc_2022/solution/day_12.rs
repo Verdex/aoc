@@ -1,9 +1,9 @@
 
 use std::collections::HashMap;
-
+use std::fmt::Debug;
 use super::super::inputs::input::*;
 
-#[derive(Debug, Clone)]
+/*#[derive(Debug, Clone)]
 struct Loc {
     row : i32,
     col : i32,
@@ -197,6 +197,63 @@ abdefghi";*/
         }
         println!("{}:{}", m, x);
     }
+
+    //println!("2022 day 12:1 = {}", s);
+}
+
+#[allow(dead_code)]
+pub fn solve_2() {
+    println!("2022 day 12:2 = {}", 0);
+}*/
+
+fn display<V : Debug>(maze : &HashMap<(usize, usize), V>) {
+    let row_max = maze.iter().map(|((r, _), _)| *r).max().unwrap();
+    let col_max = maze.iter().map(|((_, c), _)| *c).max().unwrap();
+
+    let x = (0..=row_max).map(|r| (0..=col_max).map(|c| format!("{:?}", *maze.get(&(r, c)).unwrap()))
+                                               .collect::<Vec<_>>()
+                                               .join("")
+                             ).collect::<Vec<_>>()
+                              .join("\n");
+    println!("{}", x);
+}
+
+fn parse(input : &str) -> HashMap<(usize, usize), char> {
+    let mut ret = HashMap::new();
+    let lines = input.split(|x| x == '\n' || x == '\r').filter(|l| l.len() != 0);
+
+    for (row, line) in lines.enumerate() {
+        for (col, letter) in line.char_indices() {
+            ret.insert((row, col), letter);
+        }
+    }
+
+    ret
+}
+
+enum Mazelet {
+    Unmapped(u32),
+    Mapped(u32),
+    Start,
+    End,
+}
+
+#[allow(dead_code)]
+pub fn solve_1() {
+    //let input = DAY_12_1;
+    let input = "Sabqponm
+abcryxxl
+accszExk
+acctuvwj
+abdefghi";
+
+    let mut maze = parse(input);
+
+    display(&maze);
+
+    let other = maze.iter().map(|(key, value)| (key, *value as i32)).collect::<HashMap<_, _>>();
+
+    println!("{:?}", other);
 
     //println!("2022 day 12:1 = {}", s);
 }
