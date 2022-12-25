@@ -9,3 +9,4 @@ edition = "2021"
 motif = { git = "https://github.com/Verdex/motif", tag = "release-0.2.0", version = "0.2.0" }
 denest = { git = "https://github.com/Verdex/denest", tag = "release-0.1.0", version = "0.1.0" }
 bending = { git = "https://github.com/Verdex/bending", tag = "release-0.1.0", version = "0.1.0" }
+intra = { git = "https://github.com/Verdex/intra", tag = "release-0.1.0", version = "0.1.0" }

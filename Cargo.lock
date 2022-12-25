@@ -8,6 +8,7 @@ version = "0.1.0"
 dependencies = [
  "bending",
  "denest",
+ "intra",
  "motif 0.2.0",
 ]
 
@@ -24,6 +25,11 @@ dependencies = [
 name = "denest"
 version = "0.1.0"
 source = "git+https://github.com/Verdex/denest?tag=release-0.1.0#1df2a91c4316d4f5daa785c9ab21851b72d8473b"
+
+[[package]]
+name = "intra"
+version = "0.1.0"
+source = "git+https://github.com/Verdex/intra?tag=release-0.1.0#d332400918b638fe81cb6442d850a0ed81d36176"
 
 [[package]]
 name = "motif"
